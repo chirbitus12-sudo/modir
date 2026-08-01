@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المتجر الرقمي - منتجات رقمية احترافية</title>
+    <meta name="description" content="المتجر الرقمي لبيع المنتجات الرقمية الاحترافية - كتب، قوالب، دورات تعليمية وملفات جاهزة بضغطة زر.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Hero Section Grid Layout (Image 2 design matching) */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: right;
+        }
+
+        .hero-left-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .hero-mini-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 2.25rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .hero-mini-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-mini-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto;
+        }
+
+        .stats-strip {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item {
+            text-align: right;
+        }
+
+        .stat-item .num {
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1;
+        }
+
+        .stat-item .lbl {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .features-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            max-width: 1200px;
+            margin: -2rem auto 4rem;
+            position: relative;
+            z-index: 10;
+            padding: 0 1.5rem;
+        }
+
+        .feature-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        }
+
+        .feature-box-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-box h4 {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 0.35rem;
+        }
+
+        .feature-box p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cat-tab {
+            padding: 0.55rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background: #f8f9fa;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cat-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 14px rgba(232, 97, 45, 0.25);
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-right-content {
+                order: 1;
+            }
+            .hero-left-grid {
+                order: 2;
+            }
+            .stats-strip {
+                justify-content: center;
+            }
+            .features-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .features-row {
+                grid-template-columns: 1fr;
+            }
+            .hero-left-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================== HEADER ======================== -->
+    <header>
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📄</div>
+                <div class="logo-text">
+                    <span class="logo-title">المتجر الرقمي</span>
+                    <span class="logo-subtitle"><span class="dot">✦</span> منتجات رقمية احترافية بضغطة زر</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-center">
+                <a href="index.html" class="nav-link active" id="nav-home">الرئيسية</a>
+                <a href="#products-section" class="nav-link" id="nav-products">المنتجات</a>
+                <a href="#about-section" class="nav-link" id="nav-about">عن المتجر</a>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="nav-actions">
+                <a href="#products-section" class="btn btn-primary">
+                    <span class="btn-icon">🛒</span>
+                    تسوق الآن
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================== HERO SECTION ======================== -->
+    <section class="hero" style="padding: 4rem 2rem 5rem;">
+        <div class="hero-grid">
+            <!-- Left Side: Mini Cards Layout -->
+            <div class="hero-left-grid">
+                <div class="hero-mini-card">
+                    <div class="hero-mini-icon" style="background: rgba(232, 97, 45, 0.1); color: var(--primary);">📄</div>
+                </div>
+                <div class="hero-mini-card">
+                    <div class="hero-mini-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">📦</div>
+                </div>
+                <div class="hero-mini-card">
+                    <div class="hero-mini-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">📖</div>
+                </div>
+                <div class="hero-mini-card">
+                    <div class="hero-mini-icon" style="background: rgba(44, 182, 125, 0.1); color: var(--accent);">📥</div>
+                </div>
+            </div>
+
+            <!-- Right Side: Text & Actions -->
+            <div class="hero-right-content">
+                <div class="hero-badge" style="background: rgba(232, 97, 45, 0.1); color: var(--primary); border: 1px solid rgba(232, 97, 45, 0.2);">
+                    <span class="badge-icon">⚡</span>
+                    منتجات رقمية فورية التسليم
+                </div>
+                <h1 style="font-size: 2.8rem; font-weight: 900; line-height: 1.25; margin-bottom: 1rem;">
+                    مرحباً بك في <span class="highlight">المتجر الرقمي</span>
+                </h1>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.75rem;">
+                    متجر متخصص في بيع المنتجات الرقمية: كتب إلكترونية، قوالب تصميم، ملفات PDF، وملفات مضغوطة. دفع آمن عبر بريدي موب (CCP) مع تسليم فوري بعد التحقق.
+                </p>
+                <div style="display: flex; gap: 0.85rem; flex-wrap: wrap;">
+                    <a href="#products-section" class="btn btn-primary" style="padding: 0.75rem 1.75rem;">
+                        <span class="btn-icon">🛒</span>
+                        تصفح المنتجات
+                    </a>
+                    <a href="client.html" class="btn btn-outline" style="padding: 0.75rem 1.5rem;">
+                        متابعة طلبي
+                    </a>
+                </div>
+
+                <!-- Stats Strip -->
+                <div class="stats-strip">
+                    <div class="stat-item">
+                        <div class="num">+6</div>
+                        <div class="lbl">سنوات خبرة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">100%</div>
+                        <div class="lbl">جودة مضمونة</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="num">24/7</div>
+                        <div class="lbl">دعم فني</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== FEATURES ROW ======================== -->
+    <div class="features-row">
+        <div class="feature-box">
+            <div class="feature-box-icon" style="background: rgba(232, 97, 45, 0.1); color: var(--primary);">⚡</div>
+            <h4>تسليم فوري</h4>
+            <p>احصل على رابط التحميل فور تأكيد الدفع</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-box-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">🛡️</div>
+            <h4>دفع آمن</h4>
+            <p>عملية آمنة عبر بريدي موب (CCP)</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-box-icon" style="background: rgba(44, 182, 125, 0.1); color: var(--accent);">🎧</div>
+            <h4>دعم متواصل</h4>
+            <p>فريق دعم متواجد 24/7 لمساعدتك</p>
+        </div>
+        <div class="feature-box">
+            <div class="feature-box-icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;">⭐</div>
+            <h4>جودة عالية</h4>
+            <p>منتجات مختارة بعناية لتلبية احتياجاتك</p>
+        </div>
+    </div>
+
+    <!-- ======================== PRODUCTS SECTION ======================== -->
+    <section class="section" id="products-section" style="background: #ffffff; padding-top: 3rem;">
+        <div class="section-header" style="margin-bottom: 2rem;">
+            <div class="section-badge" style="background: var(--primary-lighter); color: var(--primary); border-color: rgba(232, 97, 45, 0.15);">
+                <span>🔸</span>
+                منتجاتنا الرقمية
+            </div>
+            <h2 class="section-title">اكتشف مجموعتنا من المنتجات الرقمية</h2>
+            <p class="section-subtitle">مجموعة متنوعة من الكتب الإلكترونية، والقوالب، والملفات، الجاهزة للتحميل الفوري بعد الدفع</p>
+        </div>
+
+        <!-- Category Filters -->
+        <div class="category-tabs">
+            <button class="cat-tab active" data-cat="all">🎉 الكل</button>
+            <button class="cat-tab" data-cat="كتب إلكترونية">📖 كتب إلكترونية</button>
+            <button class="cat-tab" data-cat="قوالب تصميم">🎨 قوالب تصميم</button>
+            <button class="cat-tab" data-cat="دورات ورشات">🎓 دورات ورشات</button>
+            <button class="cat-tab" data-cat="برمجيات وملفات">💻 برمجيات وملفات</button>
+        </div>
+
+        <div class="container">
+            <div class="products-grid" id="products-container">
+                <!-- Products injected by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== ABOUT SECTION ======================== -->
+    <section class="section" id="about-section">
+        <div class="section-header">
+            <div class="section-badge">
+                <span>💡</span>
+                عن المتجر
+            </div>
+            <h2 class="section-title">لماذا المتجر الرقمي؟</h2>
+            <p class="section-subtitle">نوفر لك تجربة شراء سلسة وآمنة للمنتجات الرقمية</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon blue">🔐</div>
+                <h3>دفع آمن</h3>
+                <p>ادفع بكل ثقة عبر بريدي موب أو CCP مع تأكيد فوري لعملية الدفع.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon green">⚡</div>
+                <h3>تحميل فوري</h3>
+                <p>بمجرد تأكيد الدفع، يتم تفعيل رابط التحميل تلقائياً وإرساله لبريدك.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon orange">🎯</div>
+                <h3>منتجات احترافية</h3>
+                <p>جميع المنتجات مُعدة بعناية فائقة من قبل خبراء في مجالاتهم.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================== CHECKOUT MODAL ======================== -->
+    <div class="modal" id="checkout-modal">
+        <div class="modal-content">
+            <button class="close-btn" id="close-modal-btn">&times;</button>
+            <h2 style="margin-bottom: 1.5rem; font-weight: 800;" id="modal-product-title">شراء المنتج</h2>
+
+            <div class="payment-info">
+                <p>الرجاء الدفع عبر بريدي موب / CCP وإرفاق إثبات الدفع:</p>
+                <div class="payment-details">
+                    <span>طريقة الدفع:</span> <span id="ccp-name-val">بريدي موب</span>
+                    <span>حساب CCP:</span> <span id="ccp-acc-val">11833185</span>
+                    <span>المفتاح:</span> <span id="ccp-key-val">32</span>
+                    <span>المبلغ:</span> <span id="modal-product-price" style="font-weight: 800; color: var(--primary);">0 دج</span>
+                </div>
+            </div>
+
+            <form id="checkout-form">
+                <input type="hidden" id="checkout-product-id">
+
+                <div class="form-group">
+                    <label for="customer-email">البريد الإلكتروني للعميل (سيصلك رابط التحميل هنا):</label>
+                    <input type="email" id="customer-email" class="form-control" placeholder="example@mail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment-ref">رقم المعاملة أو كود الدفع (اختياري):</label>
+                    <input type="text" id="payment-ref" class="form-control" placeholder="123456...">
+                </div>
+
+                <div class="form-group">
+                    <label for="payment-receipt">رفع صورة وصل الدفع (بريدي موب أو CCP):</label>
+                    <input type="file" id="payment-receipt" class="form-control" accept="image/*" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">تأكيد إرسال الطلب</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================== SUCCESS MODAL ======================== -->
+    <div class="modal" id="success-modal">
+        <div class="modal-content" style="text-align: center;">
+            <button class="close-btn" id="close-success-btn">&times;</button>
+            <span style="font-size: 3.5rem;">🎉</span>
+            <h2 style="color: var(--success); margin: 1rem 0; font-weight: 800;">تم إرسال طلبك بنجاح!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">تم إرسال إشعار فوري إلى البريد الإلكتروني للمدير لتأكيد الدفع، كما أرسلنا لك رابط تتبع طلبك.</p>
+
+            <div style="background: #f8f9fa; padding: 1.25rem; border-radius: 12px; text-align: right; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+                <p style="font-size: 0.9rem; color: var(--primary); margin-bottom: 0.75rem; font-weight: 700;">📩 رابط تتبع الطلب الخاص بك:</p>
+                <div>
+                    <strong style="font-size: 0.85rem;">رابط التتبع:</strong><br>
+                    <a id="client-link" href="#" target="_blank" style="color: var(--primary); word-break: break-all; font-size: 0.85rem;">-</a>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="btn-done" style="width: 100%;">حسناً، فهمت</button>
+        </div>
+    </div>
+
+    <!-- ======================== FOOTER ======================== -->
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="#products-section">المنتجات</a>
+            <a href="client.html">متابعة طلبي</a>
+        </div>
+        <p>&copy; 2026 المتجر الرقمي. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("products-container");
+            const catTabs = document.querySelectorAll(".cat-tab");
+            let currentCat = "all";
+
+            function renderSettings() {
+                const settings = db.getSettings();
+                const ccpNameEl = document.getElementById("ccp-name-val");
+                const ccpAccEl = document.getElementById("ccp-acc-val");
+                const ccpKeyEl = document.getElementById("ccp-key-val");
+
+                if (ccpNameEl) ccpNameEl.textContent = settings.ccpName || "بريدي موب";
+                if (ccpAccEl) ccpAccEl.textContent = settings.ccpAccount || "11833185";
+                if (ccpKeyEl) ccpKeyEl.textContent = settings.ccpKey || "32";
+            }
+
+            function renderProducts(cat = currentCat) {
+                currentCat = cat;
+                const products = db.getProducts().filter(p => p.active !== false);
+                container.innerHTML = "";
+
+                const filtered = cat === "all" 
+                    ? products 
+                    : products.filter(p => (p.category || "كتب إلكترونية") === cat);
+
+                if (filtered.length === 0) {
+                    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">لا توجد منتجات في هذا التصنيف حالياً.</div>`;
+                    return;
+                }
+
+                filtered.forEach((p, index) => {
+                    const card = document.createElement("div");
+                    card.className = "product-card";
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.innerHTML = `
+                        <img src="${p.image}" alt="${p.title}" class="product-image" loading="lazy">
+                        <div class="product-info">
+                            <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; background: var(--primary-lighter); padding: 0.2rem 0.6rem; border-radius: 50px; width: fit-content; margin-bottom: 0.5rem;">${p.category || 'كتب إلكترونية'}</span>
+                            <h3 class="product-title">${p.title}</h3>
+                            <p class="product-description">${p.description}</p>
+                            <div class="product-footer">
+                                <span class="product-price">${p.price}</span>
+                                <button class="btn btn-primary buy-btn" data-id="${p.id}">شراء الآن</button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+
+            renderSettings();
+            renderProducts();
+
+            // Listen to real-time changes made in Admin panel (across tabs/windows)
+            window.addEventListener("storage", () => {
+                renderSettings();
+                renderProducts();
+            });
+
+            // Category Tab Filter
+            catTabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    catTabs.forEach(t => t.classList.remove("active"));
+                    tab.classList.add("active");
+                    renderProducts(tab.dataset.cat);
+                });
+            });
+
+            // Modal Interactions
+            const checkoutModal = document.getElementById("checkout-modal");
+            const successModal = document.getElementById("success-modal");
+            const closeModalBtn = document.getElementById("close-modal-btn");
+            const closeSuccessBtn = document.getElementById("close-success-btn");
+            const btnDone = document.getElementById("btn-done");
+            const checkoutForm = document.getElementById("checkout-form");
+
+            let selectedProduct = null;
+
+            document.addEventListener("click", (e) => {
+                if (e.target.classList.contains("buy-btn")) {
+                    const prodId = e.target.dataset.id;
+                    const allProducts = db.getProducts();
+                    selectedProduct = allProducts.find(p => p.id === prodId);
+                    if (selectedProduct) {
+                        document.getElementById("modal-product-title").textContent = selectedProduct.title;
+                        document.getElementById("modal-product-price").textContent = selectedProduct.price;
+                        document.getElementById("checkout-product-id").value = selectedProduct.id;
+                        renderSettings(); // ensure fresh payment details
+                        checkoutModal.classList.add("active");
+                    }
+                }
+            });
+
+            const hideModals = () => {
+                checkoutModal.classList.remove("active");
+                successModal.classList.remove("active");
+                checkoutForm.reset();
+            };
+
+            closeModalBtn.addEventListener("click", hideModals);
+            closeSuccessBtn.addEventListener("click", hideModals);
+            btnDone.addEventListener("click", hideModals);
+
+            [checkoutModal, successModal].forEach(modal => {
+                modal.addEventListener("click", (e) => {
+                    if (e.target === modal) hideModals();
+                });
+            });
+
+            checkoutForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById("customer-email").value;
+                const ref = document.getElementById("payment-ref").value;
+                const fileInput = document.getElementById("payment-receipt");
+
+                const processSubmission = (receiptBase64) => {
+                    const orderId = "order-" + Math.random().toString(36).substr(2, 9);
+                    const newOrder = {
+                        id: orderId,
+                        email: email,
+                        reference: ref || "غير متوفر",
+                        receipt: receiptBase64 || "https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=150&q=80",
+                        productId: selectedProduct.id,
+                        productTitle: selectedProduct.title,
+                        price: selectedProduct.price,
+                        status: "pending",
+                        date: new Date().toLocaleString("ar-DZ")
+                    };
+
+                    db.addOrder(newOrder);
+
+                    const clientUrl = window.location.origin + window.location.pathname.replace("index.html", "") + `client.html?orderId=${orderId}`;
+                    const adminUrl = window.location.origin + window.location.pathname.replace("index.html", "") + `admin.html`;
+
+                    document.getElementById("client-link").href = clientUrl;
+                    document.getElementById("client-link").textContent = clientUrl;
+
+                    checkoutModal.classList.remove("active");
+                    successModal.classList.add("active");
+                    showToast("تم إرسال الطلب وتخزينه بنجاح!");
+                };
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        processSubmission(event.target.result);
+                    };
+                    reader.readAsDataURL(fileInput.files[0]);
+                } else {
+                    processSubmission(null);
+                }
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

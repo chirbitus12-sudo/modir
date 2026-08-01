@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المدير - المتجر الرقمي</title>
+    <meta name="description" content="لوحة تحكم المدير لإدارة المنتجات والطلبات في المتجر الرقمي.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ======================== HEADER ======================== -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📄</div>
+                <div class="logo-text">
+                    <span class="logo-title">المتجر الرقمي</span>
+                    <span class="logo-subtitle"><span class="dot">✦</span> منتجات رقمية احترافية بضغطة زر</span>
+                </div>
+            </a>
+            <nav class="nav-center">
+                <a href="index.html" class="nav-link">الرئيسية</a>
+                <a href="admin.html" class="nav-link active">لوحة الإدارة</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-primary">
+                    <span class="btn-icon">🛒</span>
+                    تسوق الآن
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ======================== LOGIN FORM ======================== -->
+    <div id="login-container" class="login-card" style="display: block;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="width: 64px; height: 64px; background: var(--primary-lighter); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1rem; border: 1px solid rgba(232, 97, 45, 0.15);">🔒</div>
+            <h2 style="font-weight: 800; margin-bottom: 0.25rem;">تسجيل الدخول للمدير</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">أدخل بياناتك للوصول إلى لوحة التحكم</p>
+        </div>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="admin-username">اسم المستخدم:</label>
+                <input type="text" id="admin-username" class="form-control" placeholder="أدخل اسم المستخدم" required>
+            </div>
+            <div class="form-group">
+                <label for="admin-password">كلمة المرور:</label>
+                <input type="password" id="admin-password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">دخول</button>
+        </form>
+    </div>
+
+    <!-- ======================== ADMIN DASHBOARD ======================== -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 4rem; display: none;" id="admin-content">
+        
+        <!-- Navigation Tabs & Actions Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="admin-tab-btn active" id="tab-orders-btn">
+                    🛒 الطلبات
+                </button>
+                <button class="admin-tab-btn" id="tab-products-btn">
+                    📦 المنتجات
+                </button>
+                <button class="admin-tab-btn" id="tab-settings-btn">
+                    ⚙️ الإعدادات
+                </button>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+                <button id="refresh-btn" class="btn btn-outline">
+                    <span class="btn-icon">🔄</span>
+                    تحديث
+                </button>
+                <button id="logout-btn" class="btn btn-danger">
+                    <span class="btn-icon">🚪</span>
+                    خروج
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="stat-total">0</div>
+                <div class="stat-label">إجمالي الطلبات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-pending" style="color: var(--warning);">0</div>
+                <div class="stat-label">طلبات معلقة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-approved" style="color: var(--success);">0</div>
+                <div class="stat-label">طلبات مؤكدة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="stat-products" style="color: #8b5cf6;">0</div>
+                <div class="stat-label">المنتجات المتاحة</div>
+            </div>
+        </div>
+
+        <!-- SECTION 1: Orders Table -->
+        <div class="admin-container" id="orders-section">
+            <div class="header-actions">
+                <div>
+                    <h2 style="font-weight: 800; font-size: 1.25rem;">إدارة الطلبات</h2>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">مراجعة وصول الدفعات، تفعيل روابط التحميل للزبائن، أو حذف الطلبات.</p>
+                </div>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="order-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>المنتج</th>
+                            <th>السعر</th>
+                            <th>إيميل العميل</th>
+                            <th>كود المعاملة</th>
+                            <th>وصل الدفع</th>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th>الخيارات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-list">
+                        <!-- Orders injected here -->
+                    </tbody>
+                </table>
+
+                <div id="no-orders-msg" style="text-align: center; padding: 3rem; color: var(--text-muted); display: none;">
+                    <span style="font-size: 3rem;">📭</span>
+                    <p style="margin-top: 1rem; font-size: 1.1rem;">لا توجد أي طلبات حالياً.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Products Manager -->
+        <div class="admin-container" id="products-section" style="display: none;">
+            <div class="header-actions">
+                <div>
+                    <h2 style="font-weight: 800; font-size: 1.5rem;">المنتجات</h2>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">إدارة منتجاتك الرقمية</p>
+                </div>
+                <button id="add-product-btn" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
+                    <span style="font-size: 1.2rem;">+</span> إضافة منتج
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div style="margin-bottom: 2rem;">
+                <input type="text" id="search-products-input" class="form-control" placeholder="🔍 ابحث باسم المنتج أو التصنيف..." style="border-radius: 50px; padding: 0.85rem 1.5rem;">
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="admin-products-grid">
+                <!-- Products injected by JS -->
+            </div>
+
+            <div id="no-products-msg" style="text-align: center; padding: 3rem; color: var(--text-muted); display: none;">
+                <span style="font-size: 3rem;">📦</span>
+                <p style="margin-top: 1rem; font-size: 1.1rem;">لا توجد أي منتجات متاحة حالياً.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Settings Manager -->
+        <div class="admin-container" id="settings-section" style="display: none;">
+            <div class="header-actions">
+                <div>
+                    <h2 style="font-weight: 800; font-size: 1.5rem;">إعدادات الدفع والحساب</h2>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.25rem;">تعديل معلومات حساب CCP الظاهرة للعملاء عند الشراء</p>
+                </div>
+            </div>
+            <form id="settings-form" style="max-width: 600px;">
+                <div class="form-group">
+                    <label for="set-ccp-name">طريقة الدفع / اسم الحساب *</label>
+                    <input type="text" id="set-ccp-name" class="form-control" placeholder="بريدي موب" required>
+                </div>
+                <div class="form-group">
+                    <label for="set-ccp-acc">رقم حساب CCP *</label>
+                    <input type="text" id="set-ccp-acc" class="form-control" placeholder="11833185" required>
+                </div>
+                <div class="form-group">
+                    <label for="set-ccp-key">مفتاح CCP (Clé) *</label>
+                    <input type="text" id="set-ccp-key" class="form-control" placeholder="32" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="padding: 0.85rem 2rem; margin-top: 1rem;">
+                    <span>💾</span> حفظ الإعدادات
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- ======================== ADD/EDIT PRODUCT MODAL ======================== -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content" style="max-width: 650px; max-height: 90vh; overflow-y: auto;">
+            <button class="close-btn" id="close-product-modal">&times;</button>
+            <h2 style="font-weight: 800; margin-bottom: 0.25rem;" id="product-modal-title">تعديل المنتج</h2>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">عَدِّل بيانات المنتج ثم احفظ التغييرات</p>
+
+            <form id="product-form">
+                <input type="hidden" id="product-form-id">
+
+                <div style="display: grid; grid-template-columns: 1fr 140px; gap: 1.5rem; margin-bottom: 1.25rem;">
+                    <div>
+                        <div class="form-group">
+                            <label for="prod-title">اسم المنتج *</label>
+                            <input type="text" id="prod-title" class="form-control" placeholder="اسم المنتج" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="prod-price">السعر (دج) *</label>
+                                <input type="text" id="prod-price" class="form-control" placeholder="مثال: 1500 دج" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="prod-category">التصنيف</label>
+                                <select id="prod-category" class="form-control">
+                                    <option value="كتب إلكترونية">كتب إلكترونية 📖</option>
+                                    <option value="قوالب تصميم">قوالب تصميم 🎨</option>
+                                    <option value="دورات ورشات">دورات ورشات 🎓</option>
+                                    <option value="برمجيات وملفات">برمجيات وملفات 💻</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cover Image Upload/Preview -->
+                    <div style="text-align: center;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.85rem;">صورة الغلاف</label>
+                        <div id="image-preview-container" class="image-preview-wrapper" style="width: 130px; height: 130px; margin: 0 auto; display: none;">
+                            <img id="cover-preview-img" src="" alt="Cover Preview">
+                            <button type="button" class="remove-img-btn" id="remove-cover-btn">&times;</button>
+                        </div>
+                        <label id="upload-cover-label" for="prod-image-file" class="file-upload-dropzone" style="display: block; padding: 1.5rem 0.5rem;">
+                            <span style="font-size: 1.5rem;">📷</span>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">اختر صورة</span>
+                        </label>
+                        <input type="file" id="prod-image-file" accept="image/*" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prod-description">الوصف المختصر *</label>
+                    <input type="text" id="prod-description" class="form-control" placeholder="وصف قصير للمنتج" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="prod-full-description">الوصف الكامل *</label>
+                    <textarea id="prod-full-description" class="form-control" rows="3" placeholder="وصف تفصيلي للمنتج..."></textarea>
+                </div>
+
+                <!-- Digital File Upload section -->
+                <div class="form-group">
+                    <label>الملف الرقمي</label>
+                    <div class="file-upload-dropzone" id="file-dropzone" style="padding: 1.25rem;">
+                        <div style="font-size: 1.75rem; color: var(--primary);">📄</div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);" id="uploaded-file-name">لا يوجد ملف رقمي مرفوع حالياً</p>
+                        <button type="button" class="btn btn-outline" id="trigger-file-upload" style="margin-top: 0.5rem; padding: 0.4rem 1rem; font-size: 0.8rem;">
+                            <span>📤</span> رفع الملف الرقمي
+                        </button>
+                        <input type="file" id="prod-digital-file" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prod-download-url">أو رابط تحميل خارجي (اختياري)</label>
+                    <input type="url" id="prod-download-url" class="form-control" placeholder="https://example.com/download.zip">
+                </div>
+
+                <!-- Active status toggle -->
+                <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 0.85rem 1.25rem; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <div>
+                        <strong style="display: block; font-size: 0.9rem;">المنتج نشط</strong>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">المنتجات غير النشطة لا تظهر للعملاء</span>
+                    </div>
+                    <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                        <input type="checkbox" id="prod-active" checked style="opacity: 0; width: 0; height: 0;">
+                        <span id="toggle-switch" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary); transition: .4s; border-radius: 34px;"></span>
+                    </label>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1; padding: 0.85rem;">
+                        <span style="font-size: 1rem;">✓</span> حفظ التغييرات
+                    </button>
+                    <button type="button" class="btn btn-outline" id="cancel-product-modal" style="padding: 0.85rem 1.5rem;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================== RECEIPT PREVIEW MODAL ======================== -->
+    <div class="modal" id="receipt-modal">
+        <div class="modal-content" style="max-width: 600px; text-align: center;">
+            <button class="close-btn" id="close-receipt-modal">&times;</button>
+            <h3 style="margin-bottom: 1rem; font-weight: 700;">صورة وصل الدفع المرفقة</h3>
+            <img id="receipt-preview-img" src="" alt="Receipt Image Preview">
+        </div>
+    </div>
+
+    <!-- ======================== FOOTER ======================== -->
+    <footer>
+        <p>&copy; 2026 المتجر الرقمي. لوحة التحكم للمدير.</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginContainer = document.getElementById("login-container");
+            const adminContent = document.getElementById("admin-content");
+            const loginForm = document.getElementById("login-form");
+            const logoutBtn = document.getElementById("logout-btn");
+
+            // Navigation Tabs
+            const tabOrdersBtn = document.getElementById("tab-orders-btn");
+            const tabProductsBtn = document.getElementById("tab-products-btn");
+            const tabSettingsBtn = document.getElementById("tab-settings-btn");
+            const ordersSection = document.getElementById("orders-section");
+            const productsSection = document.getElementById("products-section");
+            const settingsSection = document.getElementById("settings-section");
+
+            // Settings Form Elements
+            const settingsForm = document.getElementById("settings-form");
+            const setCcpName = document.getElementById("set-ccp-name");
+            const setCcpAcc = document.getElementById("set-ccp-acc");
+            const setCcpKey = document.getElementById("set-ccp-key");
+
+            // Orders list elements
+            const ordersList = document.getElementById("orders-list");
+            const noOrdersMsg = document.getElementById("no-orders-msg");
+            const refreshBtn = document.getElementById("refresh-btn");
+            const receiptModal = document.getElementById("receipt-modal");
+            const receiptPreviewImg = document.getElementById("receipt-preview-img");
+            const closeReceiptModal = document.getElementById("close-receipt-modal");
+
+            // Products manager elements
+            const adminProductsGrid = document.getElementById("admin-products-grid");
+            const noProductsMsg = document.getElementById("no-products-msg");
+            const addProductBtn = document.getElementById("add-product-btn");
+            const searchProductsInput = document.getElementById("search-products-input");
+
+            // Product Modal elements
+            const productModal = document.getElementById("product-modal");
+            const closeProductModal = document.getElementById("close-product-modal");
+            const cancelProductModal = document.getElementById("cancel-product-modal");
+            const productForm = document.getElementById("product-form");
+            const productModalTitle = document.getElementById("product-modal-title");
+
+            const prodFormId = document.getElementById("product-form-id");
+            const prodTitle = document.getElementById("prod-title");
+            const prodPrice = document.getElementById("prod-price");
+            const prodCategory = document.getElementById("prod-category");
+            const prodDescription = document.getElementById("prod-description");
+            const prodFullDescription = document.getElementById("prod-full-description");
+            const prodDownloadUrl = document.getElementById("prod-download-url");
+            const prodActive = document.getElementById("prod-active");
+
+            // Cover Image preview handlers
+            const prodImageFile = document.getElementById("prod-image-file");
+            const coverPreviewImg = document.getElementById("cover-preview-img");
+            const imagePreviewContainer = document.getElementById("image-preview-container");
+            const uploadCoverLabel = document.getElementById("upload-cover-label");
+            const removeCoverBtn = document.getElementById("remove-cover-btn");
+            let currentCoverBase64 = "";
+
+            // Digital file upload handlers
+            const prodDigitalFile = document.getElementById("prod-digital-file");
+            const triggerFileUpload = document.getElementById("trigger-file-upload");
+            const uploadedFileName = document.getElementById("uploaded-file-name");
+            let currentFileBase64 = "";
+
+            // Tab Switching
+            tabOrdersBtn.addEventListener("click", () => {
+                tabOrdersBtn.classList.add("active");
+                tabProductsBtn.classList.remove("active");
+                tabSettingsBtn.classList.remove("active");
+                ordersSection.style.display = "block";
+                productsSection.style.display = "none";
+                settingsSection.style.display = "none";
+            });
+
+            tabProductsBtn.addEventListener("click", () => {
+                tabProductsBtn.classList.add("active");
+                tabOrdersBtn.classList.remove("active");
+                tabSettingsBtn.classList.remove("active");
+                productsSection.style.display = "block";
+                ordersSection.style.display = "none";
+                settingsSection.style.display = "none";
+                loadProducts();
+            });
+
+            tabSettingsBtn.addEventListener("click", () => {
+                tabSettingsBtn.classList.add("active");
+                tabOrdersBtn.classList.remove("active");
+                tabProductsBtn.classList.remove("active");
+                settingsSection.style.display = "block";
+                ordersSection.style.display = "none";
+                productsSection.style.display = "none";
+                loadSettings();
+            });
+
+            function loadSettings() {
+                const settings = db.getSettings();
+                setCcpName.value = settings.ccpName || "بريدي موب";
+                setCcpAcc.value = settings.ccpAccount || "11833185";
+                setCcpKey.value = settings.ccpKey || "32";
+            }
+
+            settingsForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const newSettings = {
+                    ccpName: setCcpName.value.trim(),
+                    ccpAccount: setCcpAcc.value.trim(),
+                    ccpKey: setCcpKey.value.trim()
+                };
+                db.saveSettings(newSettings);
+                showToast("تم حفظ إعدادات الدفع والحساب بنجاح!");
+            });
+
+            // Authentication check
+            function checkAuth() {
+                if (sessionStorage.getItem("adminLoggedIn") === "true") {
+                    loginContainer.style.display = "none";
+                    adminContent.style.display = "block";
+                    loadOrders();
+                    loadProducts();
+                    loadSettings();
+                    updateStats();
+                } else {
+                    loginContainer.style.display = "block";
+                    adminContent.style.display = "none";
+                }
+            }
+
+            // Login
+            loginForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const usernameInput = document.getElementById("admin-username").value.trim();
+                const passwordInput = document.getElementById("admin-password").value.trim();
+
+                if (usernameInput === "karno" && passwordInput === "2587") {
+                    sessionStorage.setItem("adminLoggedIn", "true");
+                    showToast("تم تسجيل الدخول بنجاح!");
+                    checkAuth();
+                } else {
+                    showToast("اسم المستخدم أو كلمة المرور غير صحيحة!", "error");
+                }
+            });
+
+            // Logout
+            logoutBtn.addEventListener("click", () => {
+                sessionStorage.removeItem("adminLoggedIn");
+                showToast("تم تسجيل الخروج بنجاح.");
+                checkAuth();
+            });
+
+            function updateStats() {
+                const orders = db.getOrders();
+                const products = db.getProducts();
+                document.getElementById("stat-total").textContent = orders.length;
+                document.getElementById("stat-pending").textContent = orders.filter(o => o.status === "pending").length;
+                document.getElementById("stat-approved").textContent = orders.filter(o => o.status === "approved").length;
+                document.getElementById("stat-products").textContent = products.length;
+            }
+
+            // Orders
+            function loadOrders() {
+                const orders = db.getOrders();
+                ordersList.innerHTML = "";
+
+                if (orders.length === 0) {
+                    noOrdersMsg.style.display = "block";
+                    return;
+                } else {
+                    noOrdersMsg.style.display = "none";
+                }
+
+                orders.forEach(order => {
+                    const tr = document.createElement("tr");
+
+                    const badgeClass = order.status === "approved" ? "badge-approved" : "badge-pending";
+                    const statusText = order.status === "approved" ? "مؤكد" : "معلق";
+
+                    let actionBtn = "";
+                    if (order.status === "pending") {
+                        actionBtn = `<button class="btn btn-accent approve-btn" data-id="${order.id}" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 8px;">تأكيد الدفع</button>`;
+                    }
+
+                    tr.innerHTML = `
+                        <td style="font-weight: 600; color: var(--primary); font-size: 0.8rem;">${order.id}</td>
+                        <td>${order.productTitle}</td>
+                        <td style="color: var(--primary); font-weight: 700;">${order.price}</td>
+                        <td style="font-size: 0.85rem;">${order.email}</td>
+                        <td style="font-family: monospace; color: var(--text-muted);">${order.reference}</td>
+                        <td>
+                            <img src="${order.receipt}" class="receipt-thumb view-receipt" data-src="${order.receipt}" alt="Receipt">
+                        </td>
+                        <td style="font-size: 0.8rem; color: var(--text-muted);">${order.date}</td>
+                        <td><span class="badge ${badgeClass}">${statusText}</span></td>
+                        <td style="white-space: nowrap;">
+                            ${actionBtn}
+                            <button class="btn btn-danger delete-btn" data-id="${order.id}" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; border-radius: 8px; margin-right: 0.25rem;">حذف</button>
+                        </td>
+                    `;
+                    ordersList.appendChild(tr);
+                });
+            }
+
+            // Products Management
+            function loadProducts(filterQuery = "") {
+                const products = db.getProducts();
+                adminProductsGrid.innerHTML = "";
+
+                const filtered = products.filter(p => 
+                    p.title.toLowerCase().includes(filterQuery.toLowerCase()) || 
+                    (p.category && p.category.toLowerCase().includes(filterQuery.toLowerCase()))
+                );
+
+                if (filtered.length === 0) {
+                    noProductsMsg.style.display = "block";
+                    return;
+                } else {
+                    noProductsMsg.style.display = "none";
+                }
+
+                filtered.forEach(p => {
+                    const card = document.createElement("div");
+                    card.className = "product-admin-card";
+
+                    const isHidden = p.active === false;
+                    const statusBadgeHTML = isHidden 
+                        ? `<span class="product-status-badge hidden">مخفي</span>`
+                        : `<span class="product-status-badge active">نشط</span>`;
+
+                    card.innerHTML = `
+                        ${statusBadgeHTML}
+                        <img src="${p.image || 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80'}" alt="${p.title}" class="product-image">
+                        <div class="product-info">
+                            <span style="font-size: 0.75rem; color: var(--primary); font-weight: 600; background: var(--primary-lighter); padding: 0.2rem 0.6rem; border-radius: 50px; width: fit-content; margin-bottom: 0.5rem;">${p.category || 'كتب إلكترونية'}</span>
+                            <h3 class="product-title" style="font-size: 1rem;">${p.title}</h3>
+                            <p class="product-description" style="font-size: 0.85rem;">${p.description}</p>
+                            <div class="product-footer">
+                                <span class="product-price" style="font-size: 1.15rem;">${p.price}</span>
+                                <div class="product-admin-actions">
+                                    <button class="action-icon-btn edit-product-btn" data-id="${p.id}" title="تعديل">✏️</button>
+                                    <button class="action-icon-btn delete delete-product-btn" data-id="${p.id}" title="حذف">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    adminProductsGrid.appendChild(card);
+                });
+            }
+
+            // Search Products filter
+            searchProductsInput.addEventListener("input", (e) => {
+                loadProducts(e.target.value.trim());
+            });
+
+            // Cover Image Upload Handlers
+            prodImageFile.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        currentCoverBase64 = event.target.result;
+                        coverPreviewImg.src = currentCoverBase64;
+                        imagePreviewContainer.style.display = "block";
+                        uploadCoverLabel.style.display = "none";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            removeCoverBtn.addEventListener("click", () => {
+                currentCoverBase64 = "";
+                coverPreviewImg.src = "";
+                imagePreviewContainer.style.display = "none";
+                uploadCoverLabel.style.display = "block";
+                prodImageFile.value = "";
+            });
+
+            // Digital File Upload Handler
+            triggerFileUpload.addEventListener("click", () => {
+                prodDigitalFile.click();
+            });
+
+            prodDigitalFile.addEventListener("change", (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    uploadedFileName.textContent = `📁 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        currentFileBase64 = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Open Add Product Modal
+            addProductBtn.addEventListener("click", () => {
+                productForm.reset();
+                prodFormId.value = "";
+                productModalTitle.textContent = "إضافة منتج جديد";
+                currentCoverBase64 = "";
+                currentFileBase64 = "";
+                imagePreviewContainer.style.display = "none";
+                uploadCoverLabel.style.display = "block";
+                uploadedFileName.textContent = "لا يوجد ملف رقمي مرفوع حالياً";
+                prodActive.checked = true;
+                productModal.classList.add("active");
+            });
+
+            // Close Modal
+            const hideProductModal = () => {
+                productModal.classList.remove("active");
+            };
+            closeProductModal.addEventListener("click", hideProductModal);
+            cancelProductModal.addEventListener("click", hideProductModal);
+
+            // Handle Product Submit (Add / Edit)
+            productForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const id = prodFormId.value || "prod-" + Math.random().toString(36).substr(2, 9);
+                const title = prodTitle.value.trim();
+                const price = prodPrice.value.trim();
+                const category = prodCategory.value;
+                const description = prodDescription.value.trim();
+                const fullDescription = prodFullDescription.value.trim();
+                const downloadUrl = currentFileBase64 || prodDownloadUrl.value.trim() || "https://example.com/downloads/digital-file.zip";
+                const image = currentCoverBase64 || "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80";
+                const isActive = prodActive.checked;
+
+                const productObj = {
+                    id,
+                    title,
+                    price,
+                    category,
+                    description,
+                    fullDescription,
+                    downloadUrl,
+                    image,
+                    active: isActive
+                };
+
+                if (prodFormId.value) {
+                    db.updateProduct(id, productObj);
+                    showToast("تم تعديل المنتج بنجاح!");
+                } else {
+                    db.addProduct(productObj);
+                    showToast("تمت إضافة المنتج بنجاح!");
+                }
+
+                hideProductModal();
+                loadProducts();
+                updateStats();
+            });
+
+            // Handle Click Events (Edit & Delete Product, Orders actions)
+            document.addEventListener("click", (e) => {
+                const editBtn = e.target.closest(".edit-product-btn");
+                const deleteProdBtn = e.target.closest(".delete-product-btn");
+                const approveBtn = e.target.closest(".approve-btn");
+                const deleteOrderBtn = e.target.closest(".delete-btn");
+                const viewReceiptBtn = e.target.closest(".view-receipt");
+
+                // Edit Product
+                if (editBtn) {
+                    const prodId = editBtn.dataset.id;
+                    const products = db.getProducts();
+                    const prod = products.find(p => p.id === prodId);
+                    if (prod) {
+                        prodFormId.value = prod.id;
+                        prodTitle.value = prod.title;
+                        prodPrice.value = prod.price;
+                        prodCategory.value = prod.category || "كتب إلكترونية";
+                        prodDescription.value = prod.description;
+                        prodFullDescription.value = prod.fullDescription || "";
+                        prodDownloadUrl.value = prod.downloadUrl && !prod.downloadUrl.startsWith("data:") ? prod.downloadUrl : "";
+                        prodActive.checked = prod.active !== false;
+
+                        if (prod.image) {
+                            currentCoverBase64 = prod.image;
+                            coverPreviewImg.src = prod.image;
+                            imagePreviewContainer.style.display = "block";
+                            uploadCoverLabel.style.display = "none";
+                        } else {
+                            currentCoverBase64 = "";
+                            imagePreviewContainer.style.display = "none";
+                            uploadCoverLabel.style.display = "block";
+                        }
+
+                        if (prod.downloadUrl && prod.downloadUrl.startsWith("data:")) {
+                            currentFileBase64 = prod.downloadUrl;
+                            uploadedFileName.textContent = "📁 يوجد ملف رقمي مرفوع سابقاً";
+                        } else {
+                            currentFileBase64 = "";
+                            uploadedFileName.textContent = "لا يوجد ملف رقمي مرفوع حالياً";
+                        }
+
+                        productModalTitle.textContent = "تعديل المنتج";
+                        productModal.classList.add("active");
+                    }
+                }
+
+                // Delete Product
+                if (deleteProdBtn) {
+                    const prodId = deleteProdBtn.dataset.id;
+                    if (confirm("هل أنت متأكد من رغبتك في حذف هذا المنتج؟ لا يمكن التراجع عن هذا الإجراء.")) {
+                        db.deleteProduct(prodId);
+                        showToast("تم حذف المنتج بنجاح.", "error");
+                        loadProducts();
+                        updateStats();
+                    }
+                }
+
+                // Approve Order
+                if (approveBtn) {
+                    const orderId = approveBtn.dataset.id;
+                    if (confirm("هل أنت متأكد من تأكيد دفعة هذا الطلب وتفعيل رابط التحميل للعميل؟")) {
+                        db.updateOrderStatus(orderId, "approved");
+                        showToast("تم تأكيد الطلب بنجاح وتفعيل رابط التنزيل للعميل!");
+                        loadOrders();
+                        updateStats();
+                    }
+                }
+
+                // Delete Order
+                if (deleteOrderBtn) {
+                    const orderId = deleteOrderBtn.dataset.id;
+                    if (confirm("هل أنت متأكد من رغبتك في حذف هذا الطلب نهائياً؟ لا يمكن التراجع عن هذا الإجراء.")) {
+                        db.deleteOrder(orderId);
+                        showToast("تم حذف الطلب بنجاح من النظام.", "error");
+                        loadOrders();
+                        updateStats();
+                    }
+                }
+
+                // View Receipt
+                if (viewReceiptBtn) {
+                    const imgSrc = viewReceiptBtn.dataset.src;
+                    receiptPreviewImg.src = imgSrc;
+                    receiptModal.classList.add("active");
+                }
+            });
+
+            // Close receipt modal
+            closeReceiptModal.addEventListener("click", () => {
+                receiptModal.classList.remove("active");
+            });
+
+            receiptModal.addEventListener("click", (e) => {
+                if (e.target === receiptModal) receiptModal.classList.remove("active");
+            });
+
+            refreshBtn.addEventListener("click", () => {
+                loadOrders();
+                loadProducts();
+                loadSettings();
+                updateStats();
+                showToast("تم تحديث القائمة.");
+            });
+
+            // Initial auth check
+            checkAuth();
+        });
+    </script>
+</body>
+</html>
